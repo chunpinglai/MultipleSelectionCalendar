@@ -1,6 +1,9 @@
 # MultipleSelectionCalendar
 A simple multiple selection calendar base on FSCalendar.
 
+![alt tag](https://github.com/chunpinglai/MultipleSelectionCalendar/blob/master/Preview.png)
+
+
 ## How To Get Started
 
 + pod 'FSCalendar'
@@ -26,32 +29,27 @@ A simple multiple selection calendar base on FSCalendar.
 	- (void)calendarSelectedDays:(NSMutableArray *)days;
 	@end
 
-
 ## USAGE
-
-+ Present Calendar
-
+1.Present Calendar  
 
 	CalendarViewController *vc = [[CalendarViewController alloc]initWithTitle:@"Choose Date" doneButtonTitle:@"Done" 	cancelButtonTitle:@"Cancel"];
-    vc.calendarViewControllerDelegate = self;
-    vc.tintColor = [UIColor blueColor];
-    
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
-    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
-    
-    [self presentViewController:navigationController animated:NO completion:nil];
-    
-+ Import and add delegate
+	vc.calendarViewControllerDelegate = self;
+	vc.tintColor = [UIColor blueColor];
 
+	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
+	navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+    
+	[self presentViewController:navigationController animated:NO completion:nil];
+
+2.Import and add delegate
 
 	#import "CalendarViewController.h"
-	@interface ViewController ()<CalendarViewControllerDelegate>
-	@end
-    
-    
-+ Return the days which user selected.
 
+3.Add delegate
+
+	Add CalendarViewControllerDelegate
+    
+4.Return the days which user selected.
 
 	- (void)calendarSelectedDays:(NSMutableArray *)days {
-    	NSLog(@"days:%@",days);
 	}
