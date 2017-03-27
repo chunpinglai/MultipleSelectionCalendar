@@ -1,0 +1,3 @@
+target "TestCalendar" do
+    pod 'FSCalendar'
+end
