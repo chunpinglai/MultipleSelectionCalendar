@@ -1,5 +1,5 @@
 # MultipleSelectionCalendar
-A simple multiple selection calendar base on FSCalendar.
+A simple multiple selection calendar base on FSCalendar, also support single selection mode.
 
 ![alt tag](https://github.com/chunpinglai/MultipleSelectionCalendar/blob/master/Preview.png)
 
@@ -11,6 +11,10 @@ A simple multiple selection calendar base on FSCalendar.
 
 ## INTERFACE
 
+	typedef NS_ENUM(NSUInteger, CalendarSelectionMode) {
+    CalendarMultipleSelection,
+    CalendarSingleSelection
+	};
 	@interface CalendarViewController : UIViewController
 
 	@property (strong, nonatomic) NSDateFormatter *dateFormatter;
@@ -18,6 +22,7 @@ A simple multiple selection calendar base on FSCalendar.
 	@property (nonatomic, weak) NSObject <CalendarViewControllerDelegate> *calendarViewControllerDelegate;
 	@property (nonatomic, strong) UIColor *tintColor;
 	- (instancetype)initWithTitle:(NSString *)title doneButtonTitle:(NSString *)doneButtonTitle cancelButtonTitle:(NSString *)cancelButtonTitle;
+	- (instancetype)initWithMode:(CalendarSelectionMode)selectionMode navigationTitle:(NSString *)title doneButtonTitle:(NSString *)doneButtonTitle cancelButtonTitle:(NSString *)cancelButtonTitle selectedDates:(NSMutableArray *)selectedDates dateFormatter:(NSDateFormatter *)dateFormatter;
 	@end
 
 ## CalendarViewControllerDelegate
@@ -30,26 +35,41 @@ A simple multiple selection calendar base on FSCalendar.
 	@end
 
 ## USAGE
-1.Present Calendar  
+1.Create Calendar
+#####MultipleSelection - A. [多天A.]
 
 	CalendarViewController *vc = [[CalendarViewController alloc]initWithTitle:@"Choose Date" doneButtonTitle:@"Done" 	cancelButtonTitle:@"Cancel"];
 	vc.calendarViewControllerDelegate = self;
 	vc.tintColor = [UIColor blueColor];
+
+#####MultipleSelection - B with selectedDates. [多天B 輸入預選天數.]
+
+	NSMutableArray *selectedDates = [[NSMutableArray alloc]initWithObjects:@"2017/04/01", nil];
+    
+    CalendarViewController *vc = [[CalendarViewController alloc]initWithMode:CalendarMultipleSelection navigationTitle:@"Choose Date" doneButtonTitle:@"Done" cancelButtonTitle:@"Cancel" selectedDates:selectedDates dateFormatter:nil];
+    vc.calendarViewControllerDelegate = self;
+	vc.tintColor = [UIColor blueColor];
+    
+#####SingleSelection 單天
+    
+    CalendarViewController *vc = [[CalendarViewController alloc]initWithMode:CalendarSingleSelection navigationTitle:@"Choose Date" doneButtonTitle:@"Done" cancelButtonTitle:@"Cancel" selectedDates:nil dateFormatter:nil];
+
+2.Present Calendar  
 
 	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
 	navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
     
 	[self presentViewController:navigationController animated:NO completion:nil];
 
-2.Import and add delegate
+3.Import and add delegate
 
 	#import "CalendarViewController.h"
 
-3.Add delegate
+4.Add delegate
 
 	Add CalendarViewControllerDelegate
     
-4.Return the days which user selected.
+5.Return the days which user selected.
 
 	- (void)calendarSelectedDays:(NSMutableArray *)days {
 	}
