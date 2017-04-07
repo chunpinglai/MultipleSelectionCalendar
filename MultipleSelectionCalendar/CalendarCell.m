@@ -20,15 +20,15 @@
         self.circleImageView = circleImageView;
         
         CAShapeLayer *selectionLayer = [[CAShapeLayer alloc] init];
-        selectionLayer.fillColor = [UIColor blackColor].CGColor;
+        selectionLayer.fillColor = [UIColor blueColor].CGColor;
         selectionLayer.actions = @{@"hidden":[NSNull null]};
         [self.contentView.layer insertSublayer:selectionLayer below:self.titleLabel.layer];
         self.selectionLayer = selectionLayer;
         
         self.shapeLayer.hidden = YES;
         self.backgroundView = [[UIView alloc] initWithFrame:self.bounds];
-        self.backgroundView.backgroundColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.1];
-        
+//        self.backgroundView.backgroundColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.1];
+        self.backgroundView.backgroundColor = [UIColor whiteColor];
     }
     return self;
 }

@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "B2F2F49ED4704B340525B1A8BE50CF109952C8A7",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "15C71710E78C158F027B9F9BBF797D031195A9E6" : 9223372036854775807,
+    "B2F2F49ED4704B340525B1A8BE50CF109952C8A7" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "5DF1B12F-EF1C-4E90-82AD-69029BD4E2A2",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "15C71710E78C158F027B9F9BBF797D031195A9E6" : "",
+    "B2F2F49ED4704B340525B1A8BE50CF109952C8A7" : "MultipleSelectionCalendar\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "TestCalendar",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "TestCalendar\/TestCalendar.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/chunpinglai\/AFNetworkingTool.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "15C71710E78C158F027B9F9BBF797D031195A9E6"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/chunpinglai\/MultipleSelectionCalendar",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "B2F2F49ED4704B340525B1A8BE50CF109952C8A7"
+    }
+  ]
+}

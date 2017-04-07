@@ -18,6 +18,8 @@ static NSString *const defaultCancelButtonTitle = @"Cancel";
 @property (weak, nonatomic) FSCalendar *calendar;
 @property (nonatomic, copy) NSString *doneButtonTitle;
 @property (nonatomic, copy) NSString *cancelButtonTitle;
+@property (nonatomic, assign) CalendarSelectionMode calendarSelectionMode;
+@property (strong, nonatomic) NSDateFormatter *dateFormatter;
 
 @end
 
@@ -25,8 +27,15 @@ static NSString *const defaultCancelButtonTitle = @"Cancel";
 
 - (instancetype)initWithTitle:(NSString *)title doneButtonTitle:(NSString *)doneButtonTitle cancelButtonTitle:(NSString *)cancelButtonTitle {
     if (self = [self init]) {
+        self = [self initWithMode:CalendarMultipleSelection navigationTitle:title doneButtonTitle:doneButtonTitle cancelButtonTitle:cancelButtonTitle selectedDates:nil dateFormatter:nil];
+    }
+    return self;
+}
+
+- (instancetype)initWithMode:(CalendarSelectionMode)selectionMode navigationTitle:(NSString *)title doneButtonTitle:(NSString *)doneButtonTitle cancelButtonTitle:(NSString *)cancelButtonTitle selectedDates:(NSMutableArray *)selectedDates dateFormatter:(NSDateFormatter *)dateFormatter {
+    if (self = [self init]) {
         self.navigationItem.title = title;
-        _selectedDays = [[NSMutableArray alloc]init];
+        
         if (cancelButtonTitle) {
             _cancelButtonTitle = cancelButtonTitle;
         }
@@ -40,16 +49,44 @@ static NSString *const defaultCancelButtonTitle = @"Cancel";
         else {
             _doneButtonTitle = defaultDoneButtonTitle;
         }
+        
+        _calendarSelectionMode = selectionMode;
+        
+        if (dateFormatter) {
+            _dateFormatter = dateFormatter;
+        }
+        else {
+            [self addDefaultDateFormatter];
+        }
+        
+        if (selectedDates) {
+            if (_calendarSelectionMode == CalendarSingleSelection) {
+                //CalendarSingleSelection只抓第一個值
+                _selectedDays = [[NSMutableArray alloc]initWithObjects:[selectedDates objectAtIndex:0], nil];
+            }
+            else {
+                _selectedDays = [[NSMutableArray alloc]initWithArray:selectedDates];
+            }
+        }
+        else {
+            _selectedDays = [[NSMutableArray alloc]init];
+        }
     }
     return self;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self addDefaultDateFormatter];
     [self setNavigationColor:_tintColor];
     [self.calendar layoutIfNeeded];
-//    [self.calendar selectDate:[NSDate date] scrollToDate:NO];
+    
+//    if (_selectedDays && (_calendarSelectionMode == CalendarMultipleSelection)) {
+       for (NSString *dateStr in _selectedDays) {
+            NSDate *date = [_dateFormatter dateFromString:dateStr];
+            [self.calendar selectDate:date scrollToDate:NO];
+        }
+        [self configureVisibleCells];
+//    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -73,11 +110,16 @@ static NSString *const defaultCancelButtonTitle = @"Cancel";
     [view addSubview:calendar];
     self.calendar = calendar;
     
-    calendar.calendarHeaderView.backgroundColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.1];
-    calendar.calendarWeekdayView.backgroundColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.1];
-    calendar.appearance.eventSelectionColor = [UIColor whiteColor];
-    calendar.appearance.eventOffset = CGPointMake(0, -7);
-    calendar.today = nil; // Hide the today circle
+//    calendar.calendarHeaderView.backgroundColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.1];
+//    calendar.calendarWeekdayView.backgroundColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.1];
+    calendar.calendarHeaderView.backgroundColor = [UIColor whiteColor];
+    calendar.calendarWeekdayView.backgroundColor = [UIColor whiteColor];
+    calendar.appearance.weekdayTextColor = _tintColor;
+    calendar.appearance.headerTitleColor = _tintColor;
+    calendar.appearance.titleTodayColor = [UIColor redColor];
+//    calendar.appearance.eventSelectionColor = [UIColor whiteColor];
+//    calendar.appearance.eventOffset = CGPointMake(0, -7);
+//    calendar.today = [NSDate date]; // Hide the today circle
     [calendar registerClass:[CalendarCell class] forCellReuseIdentifier:@"CalendarCell"];
     
     UIPanGestureRecognizer *scopeGesture = [[UIPanGestureRecognizer alloc] initWithTarget:calendar action:@selector(handleScopeGesture:)];
@@ -91,7 +133,7 @@ static NSString *const defaultCancelButtonTitle = @"Cancel";
 - (void)addDefaultDateFormatter {
     if (!_dateFormatter) {
         self.dateFormatter = [[NSDateFormatter alloc] init];
-        self.dateFormatter.dateFormat = @"yyyy-MM-dd";
+        self.dateFormatter.dateFormat = @"yyyy/MM/dd";
     }
 }
 
@@ -155,6 +197,7 @@ static NSString *const defaultCancelButtonTitle = @"Cancel";
 - (FSCalendarCell *)calendar:(FSCalendar *)calendar cellForDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)monthPosition
 {
     CalendarCell *cell = [calendar dequeueReusableCellWithIdentifier:@"CalendarCell" forDate:date atMonthPosition:monthPosition];
+    cell.selectionLayer.fillColor = _tintColor.CGColor;
     return cell;
 }
 
@@ -189,6 +232,15 @@ static NSString *const defaultCancelButtonTitle = @"Cancel";
 {
     NSLog(@"did select date %@",[self.dateFormatter stringFromDate:date]);
     NSString *dateStr = [self.dateFormatter stringFromDate:date];
+    if (_calendarSelectionMode == CalendarSingleSelection) {
+        if (_selectedDays.count > 0) {
+            NSString *deSelectDateStr = [_selectedDays objectAtIndex:0];
+            NSDate *deSelectDate = [_dateFormatter dateFromString:deSelectDateStr];
+            [_calendar deselectDate:deSelectDate];
+            [_selectedDays removeObject:deSelectDateStr];
+        }
+    }
+    
     [_selectedDays addObject:dateStr];
     [self configureVisibleCells];
 }
